@@ -75,7 +75,7 @@ define('TWOverflow/autoDeposit', [
      * @return {Array}
      */
     var getJobData = function () {
-        return $model.getSelectedCharacter().getResourceDeposit().getJobs()
+        return modelDataService.getSelectedCharacter().getResourceDeposit().getJobs()
     }
 
     /**
@@ -164,9 +164,9 @@ define('TWOverflow/autoDeposit', [
      * @param {Object} job - Dados do trabalho
      */
     var collectJob = function (job) {
-        $socket.emit($route.RESOURCE_DEPOSIT_COLLECT, {
+        socketService.emit(routeProvider.RESOURCE_DEPOSIT_COLLECT, {
             job_id: job.id,
-            village_id: $model.getSelectedVillage().getId()
+            village_id: modelDataService.getSelectedVillage().getId()
         })
     }
 
@@ -176,7 +176,7 @@ define('TWOverflow/autoDeposit', [
      * @param {Object} job - Dados do trabalho
      */
     var startJob = function (job) {
-        $socket.emit($route.RESOURCE_DEPOSIT_START_JOB, {
+        socketService.emit(routeProvider.RESOURCE_DEPOSIT_START_JOB, {
             job_id: job.id
         })
     }
@@ -187,7 +187,7 @@ define('TWOverflow/autoDeposit', [
      * @param {Function=} _callback
      */
     var updateInfo = function (_callback) {
-        $socket.emit($route.RESOURCE_DEPOSIT_GET_INFO, {}, function (data) {
+        socketService.emit(routeProvider.RESOURCE_DEPOSIT_GET_INFO, {}, function (data) {
             depositService.updateJobData(data.jobs)
 
             nextReset = data.time_next_reset * 1000
@@ -211,13 +211,13 @@ define('TWOverflow/autoDeposit', [
     autoDeposit.init = function () {
         initialized = true
 
-        $root.$on($eventType.RESOURCE_DEPOSIT_JOB_COLLECTED, analyseJobs)
-        $root.$on($eventType.RESOURCE_DEPOSIT_JOBS_REROLLED, analyseJobs)
+        rootScope.$on(eventTypeProvider.RESOURCE_DEPOSIT_JOB_COLLECTED, analyseJobs)
+        rootScope.$on(eventTypeProvider.RESOURCE_DEPOSIT_JOBS_REROLLED, analyseJobs)
 
         // Não podemos utilizar RESOURCE_DEPOSIT_JOB_COLLECTIBLE por que é chamado
         // múltiplas vezes em seguida e acaba fodendo com o script.
 
-        // $root.$on($eventType.RESOURCE_DEPOSIT_JOB_COLLECTIBLE, analyseJobs)
+        // rootScope.$on(eventTypeProvider.RESOURCE_DEPOSIT_JOB_COLLECTIBLE, analyseJobs)
     }
 
     /**

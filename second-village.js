@@ -136,9 +136,9 @@ define('TWOverflow/autoDeposit/secondVillage', [
     var collectJob = function () {
         var collectibleJob = secondVillageService.getJobInProgress(jobs)
 
-        $socket.emit($route.SECOND_VILLAGE_COLLECT_JOB_REWARD, {
+        socketService.emit(routeProvider.SECOND_VILLAGE_COLLECT_JOB_REWARD, {
             job_id: jobs[collectibleJob].id,
-            village_id: $model.getSelectedVillage().getId()
+            village_id: modelDataService.getSelectedVillage().getId()
         }, function () {
             updateInfo()
         })
@@ -173,9 +173,9 @@ define('TWOverflow/autoDeposit/secondVillage', [
             return false
         }
 
-        $socket.emit($route.SECOND_VILLAGE_START_JOB, {
+        socketService.emit(routeProvider.SECOND_VILLAGE_START_JOB, {
             job_id: job.id,
-            village_id: $model.getSelectedVillage().getId()
+            village_id: modelDataService.getSelectedVillage().getId()
         }, function () {
             // Atualiza os dados ao iniciar o trabalho.
             // Assim a próxima a verificação não tentará
@@ -194,7 +194,7 @@ define('TWOverflow/autoDeposit/secondVillage', [
     var getAvailJobToday = function () {
         var currentDayJobs = secondVillageService.getCurrentDayJobs(jobs, day)
         var collectedJobs = secondVillageService.getCollectedJobs(jobs)
-        var resources = $model.getSelectedVillage().getResources().getResources()
+        var resources = modelDataService.getSelectedVillage().getResources().getResources()
         var availableJobs = secondVillageService.getAvailableJobs(currentDayJobs, collectedJobs, resources, [])
 
         for (var id in availableJobs) {
@@ -210,7 +210,7 @@ define('TWOverflow/autoDeposit/secondVillage', [
      * @param {Function=} _callback
      */
     var updateInfo = function (_callback) {
-        $socket.emit($route.SECOND_VILLAGE_GET_INFO, {}, function (data) {
+        socketService.emit(routeProvider.SECOND_VILLAGE_GET_INFO, {}, function (data) {
             jobs = data.jobs
             day = data.day
 
@@ -239,8 +239,8 @@ define('TWOverflow/autoDeposit/secondVillage', [
 
         active = true
 
-        $root.$on($eventType.SECOND_VILLAGE_JOB_COLLECTED, analyseJobs)
-        $root.$on($eventType.SECOND_VILLAGE_VILLAGE_CREATED, analyseJobs)
+        rootScope.$on(eventTypeProvider.SECOND_VILLAGE_JOB_COLLECTED, analyseJobs)
+        rootScope.$on(eventTypeProvider.SECOND_VILLAGE_VILLAGE_CREATED, analyseJobs)
     }
 
     /**
