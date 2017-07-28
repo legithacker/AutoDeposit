@@ -75,11 +75,6 @@ define('TWOverflow/autoDeposit/secondVillage', [
             return collectJob()
         }
 
-        // TODO
-        // - Verificar se o trabalho tem os requerimentos cumpridos.
-        // - Analisar se é preciso ter trabalhos requeridos (job.jobs_required)
-        //    antes de iniciar um trabalho
-
         if (hasReadyJob()) {
             return startJob()
         }
