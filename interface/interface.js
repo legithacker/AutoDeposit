@@ -1,9 +1,11 @@
 define('TWOverflow/autoDeposit/interface', [
     'TWOverflow/autoDeposit',
-    'TWOverflow/FrontButton'
+    'TWOverflow/FrontButton',
+    'TWOverflow/locale'
 ], function (
     autoDeposit,
-    FrontButton
+    FrontButton,
+    Locale
 ) {
     var opener
 
@@ -11,10 +13,7 @@ define('TWOverflow/autoDeposit/interface', [
         opener = new FrontButton('Deposit', {
             classHover: false,
             classBlur: false,
-            // TODO
-            // Adicionar Locale() quando uma tela de configuração global para
-            // o TWOverflow for criada.
-            tooltip: 'Automatic Resource Deposit collector.'
+            tooltip: Locale('deposit', 'description')
         })
 
         opener.click(function () {
@@ -23,13 +22,13 @@ define('TWOverflow/autoDeposit/interface', [
                 autoDeposit.secondVillage.stop()
                 opener.$elem.removeClass('btn-red').addClass('btn-green')
 
-                emitNotif('success', 'Deposit stopped!')
+                emitNotif('success', Locale('deposit', 'deactivated'))
             } else {
                 autoDeposit.start()
                 autoDeposit.secondVillage.start()
                 opener.$elem.removeClass('btn-green').addClass('btn-red')
 
-                emitNotif('success', 'Deposit started!')
+                emitNotif('success', Locale('deposit', 'activated'))
             }
         })
     }

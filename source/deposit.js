@@ -1,6 +1,10 @@
 define('TWOverflow/autoDeposit', [
+    'TWOverflow/locale',
     'helper/time'
-], function ($timeHelper) {
+], function (
+    Locale,
+    $timeHelper
+) {
     /**
      * Indica se o modulo já foi iniciado.
      *
@@ -209,6 +213,8 @@ define('TWOverflow/autoDeposit', [
      * Inicializa o AutoDepois, configura os eventos.
      */
     autoDeposit.init = function () {
+        Locale.create('deposit', __deposit_locale, 'en')
+
         initialized = true
 
         rootScope.$on(eventTypeProvider.RESOURCE_DEPOSIT_JOB_COLLECTED, analyseJobs)
