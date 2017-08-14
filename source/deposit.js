@@ -50,6 +50,10 @@ define('TWOverflow/autoDeposit', [
      * Faz a analise dos trabalhos periódicamente.
      */
     var analyseJobs = function () {
+        if (!running) {
+            return
+        }
+
         var jobs = getJobData()
 
         if (nextReset - $timeHelper.gameTime() < 0) {
